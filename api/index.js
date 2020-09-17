@@ -40,25 +40,21 @@ bot.hears('/status', (ctx) => {
 
 	exec('wget -q 127.0.0.1/custom/custom.asp -O -')
 		.then( data => {
-			mesg += 'На данный момент активно ' + data.length + ' соединений\n\n'
 			data = JSON.parse('['+data+']') // cuz router sends array, separated by comma, just like plaintext and only brackets are not enough to make it valid json
-			var sortedDevices = [] // I wanted to make it completely chained, without that buffer array, but didn't manage :(
-			data.map( (elem) => ({
+			mesg += 'На данный момент активно ' + data.length + ' соединений\n\n'
+			mesg += 
+				data.map( (elem) => ({
 					hostname: elem[2],
 					ip: elem[0],
 					mac: elem[1],
-					wireless: elem[3]
 				})
 			)
-			.forEach(device => {
-				sortedDevices[device.ip.split('.')[3]] = device // kinda bucket sort
-			})
-			sortedDevices.filter( device => {
-				return device // remove empty "buckets"
-			})
-			.map( device => {
-				mesg +=	`Hostname: ${device.hostname}\nIP: ${device.ip}\nMac: ${device.mac}\nWireless: ${device.wireless ? true : false}\n\n` 		
-			} )
+			.sort( (d1, d2) => { 
+				if ( parseInt(d1.ip.split('.')[3]) > parseInt(d2.ip.split('.')[3]) )  return 1;
+				else return -1;
+			}) // gotta beautify it later, now it's a true-chaining,
+			.map( device => `Hostname: ${device.hostname}\nIP: ${device.ip}\nMac: ${device.mac}\n`)
+			.join('\n')
 			ctx.reply(mesg)
 		} )
 
