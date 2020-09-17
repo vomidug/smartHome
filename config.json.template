@@ -1,0 +1,10 @@
+{
+        "telegramToken":"",
+		"sshConnectionConfig":{
+			"host": "",
+			"port": ,
+			"username": "",
+			"privateKeyPath":""
+		}
+
+}

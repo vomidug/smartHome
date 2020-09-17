@@ -1,3 +1,9 @@
+# configfile
+config.json
+
+# secured data
+ssh/
+
 # Logs
 logs
 *.log
