@@ -1,0 +1,26 @@
+version: '3'
+services:
+
+  api:
+    build: api/
+    restart: unless-stopped
+    networks:
+      main:
+    depends_on: 
+    - bot
+    - mongo
+
+  bot:
+    build: bot/
+    restart: unless-stopped
+    networks:
+      housebot:
+        aliases:
+          - bot
+
+volumes:
+  mongo:
+
+networks:
+  main:
+    external: true
