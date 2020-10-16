@@ -61,4 +61,13 @@ bot.hears('/status', (ctx) => {
 			
 } )
 
+bot.hears('/wakepeka', (ctx) => {
+
+	exec('./wakepeka.sh')
+		.then( data => {
+			ctx.reply('Peka is about to wake up!')
+		} )
+
+})
+
 bot.launch()
